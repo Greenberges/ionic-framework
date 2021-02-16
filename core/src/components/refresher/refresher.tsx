@@ -6,7 +6,7 @@ import { getTimeGivenProgression } from '../../utils/animation/cubic-bezier';
 import { clamp, componentOnReady, getElementRoot, raf } from '../../utils/helpers';
 import { hapticImpact } from '../../utils/native/haptic';
 
-import { createPullingAnimation, createSnapBackAnimation, getRefresherAnimationType, handleScrollWhilePulling, handleScrollWhileRefreshing, setSpinnerOpacity, shouldUseNativeRefresher, transitionEndAsync, translateElement } from './refresher.utils';
+import { createPullingAnimation, createSnapBackAnimation, getRefresherAnimationType, handleScrollWhilePulling, handleScrollWhileRefreshing, setElementPadding, setSpinnerOpacity, shouldUseNativeRefresher, transitionEndAsync } from './refresher.utils';
 
 @Component({
   tag: 'ion-refresher',
@@ -147,7 +147,7 @@ export class Refresher implements ComponentInterface {
     this.state = state;
 
     if (getIonMode(this) === 'ios') {
-      await translateElement(el, undefined);
+      await setElementPadding(el, undefined);
     } else {
       await transitionEndAsync(this.el.querySelector('.refresher-refreshing-icon'), 200);
     }
@@ -227,7 +227,7 @@ export class Refresher implements ComponentInterface {
              * from screen the scroll content will bounce back over the refresher
              */
             if (!this.pointerDown) {
-              translateElement(this.elementToTransform, `${refresherHeight}px`);
+              setElementPadding(this.elementToTransform, `${refresherHeight}px`);
             }
           }
         } else {
@@ -249,7 +249,7 @@ export class Refresher implements ComponentInterface {
             this.pointerDown = true;
 
             if (!this.didRefresh) {
-              translateElement(this.elementToTransform, '0px');
+              setElementPadding(this.elementToTransform, '0px');
             }
 
             /**
@@ -275,7 +275,7 @@ export class Refresher implements ComponentInterface {
               this.resetNativeRefresher(this.elementToTransform, RefresherState.Completing);
               this.needsCompletion = false;
             } else if (this.didRefresh) {
-              readTask(() => translateElement(this.elementToTransform, `${this.el.clientHeight}px`));
+              readTask(() => setElementPadding(this.elementToTransform, `${this.el.clientHeight}px`));
             }
           },
         });

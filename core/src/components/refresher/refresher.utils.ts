@@ -146,18 +146,18 @@ export const handleScrollWhileRefreshing = (
   });
 };
 
-export const translateElement = (el?: HTMLElement, value?: string) => {
+export const setElementPadding = (el?: HTMLElement, value?: string) => {
   if (!el) { return Promise.resolve(); }
 
-  const trans = transitionEndAsync(el, 200);
+  const trans = transitionEndAsync(el, 300);
 
   writeTask(() => {
-    el.style.setProperty('transition', '0.2s all ease-out');
+    el.style.setProperty('transition', '0.3s all ease-out');
 
     if (value === undefined) {
-      el.style.removeProperty('transform');
+      el.style.removeProperty('padding-top');
     } else {
-      el.style.setProperty('transform', `translate3d(0px, ${value}, 0px)`);
+      el.style.setProperty('padding-top', value);
     }
   });
 
